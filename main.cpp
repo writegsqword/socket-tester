@@ -97,6 +97,7 @@ std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string
         if(report_success)
             std::cout << "port " << i << "bounded " << pname << "\n";
     }
+    return result;
 }
 int main(int argc, char** argv) {
     int n_ports = 65536;
