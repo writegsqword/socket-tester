@@ -86,7 +86,7 @@ using port_vec = std::vector<int>;
 std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string pname, bool report_fail = false, bool report_success = true, int minport = 1) {
     std::vector<int> result;
     for(int i = minport; i <= maxport; i++) {
-        int c = fn(i, type);
+        int c = fn(0, type);
         if(c == -1){
             if(report_fail)
                 std::cout << "port " << i << " failed to bind " << pname << "\n";
