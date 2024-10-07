@@ -23,12 +23,12 @@ int open_and_bind(int port, int type){
     std::string message;
     socketDesc = socket(AF_INET, type, 0);
     if(socketDesc == -1){
-            std::cout << "ERROR CREATING SOCKET DESCRIPTOR\n";
+            //std::cout << "ERROR CREATING SOCKET DESCRIPTOR\n";
             return -1;
     }
 
     if(setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))){
-            std::cout << "Setsocket error\n";
+            //std::cout << "Setsocket error\n";
             return -1;
     }
     server.sin_family = AF_INET;
@@ -36,7 +36,7 @@ int open_and_bind(int port, int type){
     server.sin_port = htons(port);
 
     if(bind(socketDesc, (struct sockaddr *)&server, sizeof(server)) < 0){
-            std::cout << "BIND FAILED\n";
+            //std::cout << "BIND FAILED\n";
             return -1;
     }
     //std::cout << "Bind finished\n";
