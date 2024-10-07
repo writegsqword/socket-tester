@@ -80,25 +80,34 @@ int open_and_bind_v6(int port, int type){
     return socketDesc;
 }
 
+using open_bind_fn_t = decltype(open_and_bind);
 
-
+std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string pname, bool report_fail = false, bool report_success = true, int minport = 0) {
+    std::vector<int> result;
+    for(int i = minport; i <= maxport; i++) {
+        int c = open_and_bind(i, SOCK_STREAM);
+        if(c == -1){
+            if(report_fail)
+                std::cout << "port " << i << " failed to bind " << pname << "\n";
+            continue;
+        }
+            
+        result.push_back(i);
+        if(report_success)
+            std::cout << "port " << i << "bounded " << pname << "\n";
+    }
+}
 int main(int argc, char** argv) {
     int n_ports = 65536;
     if(argc > 1){
         n_ports = atoi(argv[1]);
     }
     
-    std::vector<int> sock_fds;
-    for(int i = 0; i < n_ports; i++) {
-        if(open_and_bind(i, SOCK_STREAM) == -1)
-            std::cout << "port " << i << " failed to bind(v4 tcp)\n";
-        if(open_and_bind(i, SOCK_DGRAM) == -1)
-            std::cout << "port " << i << " failed to bind(v4 udp)\n";
-        if(open_and_bind_v6(i, SOCK_STREAM) == -1)
-            std::cout << "port " << i << " failed to bind(v6 tcp)\n";
-        if(open_and_bind_v6(i, SOCK_DGRAM) == -1)
-            std::cout << "port " << i << " failed to bind(v6 udp)\n";
-    }
+
+    auto tcpv4 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "tcpv4");
+    auto udpv4 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "udpv4");
+    auto tcpv6 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "tcpv4");
+    auto udpv6 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "udpv4");
     int rc = system("netstat -tulnp");
     while(1) {sleep(10);}
     //return !(fd && !rc);
