@@ -95,7 +95,7 @@ std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string
             
         result.push_back(i);
         if(report_success)
-            std::cout << "port " << i << "bounded " << pname << "\n";
+            std::cout << "port " << i << " bounded " << pname << "\n";
     }
     return result;
 }
@@ -108,8 +108,8 @@ int main(int argc, char** argv) {
 
     port_vec tcpv4 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "tcpv4");
     port_vec udpv4 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "udpv4");
-    port_vec tcpv6 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "tcpv4");
-    port_vec udpv6 = bind_all(n_ports - 1, open_and_bind, SOCK_STREAM, "udpv4");
+    port_vec tcpv6 = bind_all(n_ports - 1, open_and_bind_v6, SOCK_STREAM, "tcpv4");
+    port_vec udpv6 = bind_all(n_ports - 1, open_and_bind_v6, SOCK_STREAM, "udpv4");
     int rc = system("netstat -tulnp");
     while(1) {sleep(10);}
     //return !(fd && !rc);
