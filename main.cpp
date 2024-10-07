@@ -83,7 +83,7 @@ int open_and_bind_v6(int port, int type){
 using open_bind_fn_t = decltype(open_and_bind);
 
 using port_vec = std::vector<int>;
-std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string pname, bool report_fail = false, bool report_success = true, int minport = 0) {
+std::vector<int> bind_all(int maxport, open_bind_fn_t* fn, int type, std::string pname, bool report_fail = false, bool report_success = true, int minport = 1) {
     std::vector<int> result;
     for(int i = minport; i <= maxport; i++) {
         int c = fn(i, type);
